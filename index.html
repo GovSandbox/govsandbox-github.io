@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gov Sandbox™ – Sovereign AI Sandboxes for Government Innovation</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/animejs/lib/anime.iife.min.js"></script>
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes aurora {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes subtle-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.5); }
+        }
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #2563eb, #3b82f6, #60a5fa, #93c5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-bg {
+            background: linear-gradient(135deg, #0c1220 0%, #1e293b 30%, #334155 70%, #475569 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .aurora-bg {
+            background: linear-gradient(135deg, #1e1b4b, #312e81, #1e40af, #1e3a8a);
+            background-size: 400% 400%;
+            animation: aurora 15s ease infinite;
+        }
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+            border-radius: 1rem;
+        }
+        .card-hover:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(59, 130, 246, 0.25), 0 0 40px rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.5);
+            background: rgba(255, 255, 255, 0.98);
+        }
+        .pulse-dot {
+            animation: pulse 2s infinite;
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); box-shadow: 0 0 30px rgba(59, 130, 246, 0.8); }
+        }
+        .glow-effect {
+            animation: subtle-glow 3s ease-in-out infinite;
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
+        }
+        .text-glow {
+            text-shadow: 0 0 30px rgba(59, 130, 246, 0.7);
+        }
+        .glass-effect {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4), 0 4px 15px rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.5);
+            border-radius: 0.75rem;
+            font-weight: 600;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(59, 130, 246, 0.6), 0 6px 20px rgba(59, 130, 246, 0.3);
+            background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #3b82f6 100%);
+        }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            color: white;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 0.75rem;
+            font-weight: 600;
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+        .feature-icon {
+            background: linear-gradient(135deg, #2563eb, #3b82f6, #60a5fa);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4), 0 3px 10px rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+        }
+        .pricing-card-featured {
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #3b82f6 100%);
+            color: white;
+            box-shadow: 0 25px 50px rgba(30, 64, 175, 0.5), 0 10px 20px rgba(30, 64, 175, 0.3);
+            border: 1px solid rgba(59, 130, 246, 0.6);
+            transform: scale(1.05);
+        }
+        .pricing-card-featured .text-slate-600 {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+        .pricing-card-featured:hover {
+            transform: scale(1.08) !important;
+            box-shadow: 0 30px 60px rgba(30, 64, 175, 0.6), 0 15px 30px rgba(30, 64, 175, 0.4);
+        }
+        /* Enhanced card backgrounds with subtle gradients */
+        .card-hover.bg-slate-50 {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+        .card-hover.bg-slate-50:hover {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+        }
+        /* Enhanced table styling */
+        tbody tr {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        tbody tr:hover {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-left-color: #3b82f6;
+            transform: translateX(5px);
+        }
+        /* Enhanced section backgrounds */
+        .bg-slate-100 {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+        }
+        .bg-white {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        }
+        /* Enhanced navigation */
+        nav.glass-effect {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(59, 130, 246, 0.3);
+        }
+        /* Enhanced hero section */
+        .hero-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #1e40af 100%);
+        }
+        .hero-bg::before {
+            background: radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 60%, rgba(34, 197, 94, 0.2) 0%, transparent 50%);
+        }
+        /* Enhanced text gradients */
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 25%, #2563eb 50%, #1d4ed8 75%, #1e40af 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+        /* Enhanced footer */
+        footer.bg-slate-800 {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+        }
+        /* Enhanced buttons in hero section */
+        .hero-bg .btn-secondary {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(59, 130, 246, 0.5);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.2);
+        }
+        .hero-bg .btn-secondary:hover {
+            background: rgba(15, 23, 42, 0.8);
+            border-color: rgba(59, 130, 246, 0.8);
+            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.4);
+        }
+        /* Enhanced aurora background */
+        .aurora-bg {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 25%, #1e40af 50%, #3b82f6 75%, #60a5fa 100%);
+            background-size: 400% 400%;
+            animation: aurora 12s ease infinite;
+        }
+        /* Enhanced pricing cards */
+        .card-hover:not(.pricing-card-featured) {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .card-hover:not(.pricing-card-featured):hover {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-color: rgba(59, 130, 246, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full glass-effect z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform duration-300">
+                        <i data-feather="shield" class="text-white w-6 h-6"></i>
+                    </div>
+                    <span class="font-bold text-xl text-slate-900">Gov Sandbox™</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="text-white/80 hover:text-white transition-all duration-300 font-medium">Features</a>
+                    <a href="#pricing" class="text-white/80 hover:text-white transition-all duration-300 font-medium">Pricing</a>
+                    <a href="#partners" class="text-white/80 hover:text-white transition-all duration-300 font-medium">Partners</a>
+                    <button class="btn-primary text-white px-6 py-2 rounded-lg">
+                        Request Access
+                    </button>
+                </div>
+                <button class="md:hidden" id="mobile-menu-button">
+                    <i data-feather="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-bg relative overflow-hidden pt-20 pb-32">
+        <div class="absolute inset-0 opacity-10">
+            <div id="vanta-bg" class="w-full h-full"></div>
+        </div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center pt-20 pb-16">
+                <div class="mb-6" data-aos="fade-up">
+                    <span class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500/30 to-purple-500/30 backdrop-blur-md text-white rounded-full text-sm font-semibold border border-white/40 shadow-lg">
+                        <span class="w-3 h-3 bg-blue-400 rounded-full mr-3 pulse-dot"></span>
+                        Sovereign-Grade • Compliance-Ready • AI-Native
+                    </span>
+                </div>
+                <h1 class="text-4xl md:text-7xl font-bold text-white mb-6 text-glow" data-aos="fade-up" data-aos-delay="100">
+                    Gov Sandbox™
+                    <span class="block text-2xl md:text-4xl font-light text-white/90 mt-6">
+                        Sovereign AI Sandboxes for Government Innovation
+                    </span>
+                </h1>
+                <p class="text-xl text-white/80 mb-12 max-w-3xl mx-auto leading-relaxed" data-aos="fade-up" data-aos-delay="200">
+                    The only sovereign-grade AI sandbox purpose-built for governments. Spin up isolated, policy-compliant LLM environments in minutes—no cloud lock-in, full auditability, zero-trust architecture.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center" data-aos="fade-up" data-aos-delay="300">
+                    <button class="btn-primary px-8 py-4 rounded-xl font-bold flex items-center justify-center text-lg shadow-xl text-white">
+                        <i data-feather="unlock" class="w-5 h-5 mr-2"></i>
+                        Request Access
+                    </button>
+                    <button class="btn-secondary px-8 py-4 rounded-xl font-bold flex items-center justify-center text-lg shadow-lg text-white">
+                        <i data-feather="calendar" class="w-5 h-5 mr-2"></i>
+                        Join GovHackathon™
+                    </button>
+                    <button class="bg-gradient-to-r from-white/90 to-blue-100/90 backdrop-blur-md border border-white/60 text-slate-900 px-8 py-4 rounded-xl font-bold hover:from-white hover:to-blue-200 transition-all duration-300 flex items-center justify-center text-lg shadow-xl">
+                        <i data-feather="users" class="w-5 h-5 mr-2"></i>
+                        Become a Partner
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Gov Sandbox Section -->
+    <section class="py-20 bg-white" id="features">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">🎯 Why Gov Sandbox™?</h2>
+                <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+                    AI is moving faster than policy can keep up. Gov Sandbox™ lets departments innovate at the speed of Silicon Valley while staying firmly inside the guardrails of sovereignty, security, and public accountability.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                <div class="card-hover bg-slate-50 p-8 rounded-xl border border-slate-200" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-6 shadow-lg transform hover:scale-110 transition-transform duration-300">
+                        <i data-feather="shield" class="w-6 h-6 text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">🔐 Single-Tenant Sovereign Nodes</h3>
+                    <p class="text-slate-600">Every workload runs on its own encrypted bare-metal node in your preferred jurisdiction—no shared compute, no cross-tenant leakage, no foreign surveillance.</p>
+                </div>
+                
+                <div class="card-hover bg-slate-50 p-8 rounded-xl border border-slate-200" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center mb-6 shadow-lg transform hover:scale-110 transition-transform duration-300">
+                        <i data-feather="check-circle" class="w-6 h-6 text-green-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">✅ Policy-as-Code RBAC</h3>
+                    <p class="text-slate-600">Granular, attribute-based access that maps to government org charts and clearance levels—automatically enforced and cryptographically logged.</p>
+                </div>
+                
+                <div class="card-hover bg-slate-50 p-8 rounded-xl border border-slate-200" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mb-6 shadow-lg transform hover:scale-110 transition-transform duration-300">
+                        <i data-feather="user-check" class="w-6 h-6 text-purple-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">📊 CISO Assist™ Copilot</h3>
+                    <p class="text-slate-600">An AI co-pilot trained on GDPR, HIPAA, CJIS, EU AI Act, UK AI Rulebook, NHS DSPT—flags policy drift before it becomes a breach.</p>
+                </div>
+                
+                <div class="card-hover bg-slate-50 p-8 rounded-xl border border-slate-200" data-aos="fade-up" data-aos-delay="400">
+                    <div class="w-14 h-14 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center mb-6 shadow-lg transform hover:scale-110 transition-transform duration-300">
+                        <i data-feather="brain" class="w-6 h-6 text-indigo-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">🧠 Sovereign Model Garden</h3>
+                    <p class="text-slate-600">Curated, air-gapped LLMs (open + commercial) with built-in bias, toxicity, and PII filters—no outbound calls, ever.</p>
+                </div>
+                
+                <div class="card-hover bg-slate-50 p-8 rounded-xl border border-slate-200" data-aos="fade-up" data-aos-delay="500">
+                    <div class="w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center mb-6 shadow-lg transform hover:scale-110 transition-transform duration-300">
+                        <i data-feather="grid" class="w-6 h-6 text-orange-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">🧩 Zero-Trust Data Plane</h3>
+                    <p class="text-slate-600">Data never leaves your enclave. Model weights, vector stores, and logs remain encrypted under your keys—revocable in one click.</p>
+                </div>
+                
+                <div class="card-hover bg-slate-50 p-8 rounded-xl border border-slate-200" data-aos="fade-up" data-aos-delay="600">
+                    <div class="w-14 h-14 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center mb-6 shadow-lg transform hover:scale-110 transition-transform duration-300">
+                        <i data-feather="award" class="w-6 h-6 text-red-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">🛡️ Air-Gapped & Offline-Capable</h3>
+                    <p class="text-slate-600">Run disconnected in SCIFs, submarines, or disaster zones. Optional Faraday-caged hardware kits shipped to classification level.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section class="py-20 bg-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">🛡️ Built for Governments</h2>
+                <p class="text-xl text-slate-600">Purpose-built personas for every public-sector stakeholder</p>
+            </div>
+            
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden" data-aos="fade-up">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-slate-50 border-b border-slate-200">
+                            <tr>
+                                <th class="px-6 py-4 text-left text-sm font-semibold text-slate-900">Stakeholder</th>
+                                <th class="px-6 py-4 text-left text-sm font-semibold text-slate-900">Use Cases</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200">
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4 font-medium text-slate-900">Ministries & Departments</td>
+                                <td class="px-6 py-4 text-slate-600">Test policy automation, public-facing AI agents</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4 font-medium text-slate-900">Regulators</td>
+                                <td class="px-6 py-4 text-slate-600">Validate AI system compliance with legal frameworks</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4 font-medium text-slate-900">GovTech Accelerators</td>
+                                <td class="px-6 py-4 text-slate-600">Offer isolated testing for startups</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4 font-medium text-slate-900">Procurement Teams</td>
+                                <td class="px-6 py-4 text-slate-600">Run sandbox trials before full RFP/contract</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4 font-medium text-slate-900">Law Enforcement & Defence</td>
+                                <td class="px-6 py-4 text-slate-600">Build internal tools with air-gapped control</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Features -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">🔒 Sovereign Security & Compliance by Design</h2>
+                <p class="text-xl text-slate-600">Security architecture that meets classification-level requirements out of the box</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="space-y-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                            <i data-feather="server" class="w-4 h-4 text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-slate-900 mb-2">Per-Tenant Bare-Metal Enclaves</h4>
+                            <p class="text-slate-600">Single-tenant hosts with hardware-rooted trusted execution, encrypted NVMe, and secure-boot chains verified at runtime.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4">
+                        <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                            <i data-feather="shield-check" class="w-4 h-4 text-green-600"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-slate-900 mb-2">CISO Assist™ Copilot</h4>
+                            <p class="text-slate-600">AI co-pilot continuously cross-checks your deployment against 50+ sovereign frameworks—exports auditor-ready artefacts in minutes, not weeks.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4">
+                        <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                            <i data-feather="users" class="w-4 h-4 text-purple-600"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-slate-900 mb-2">Policy-as-Code RBAC</h4>
+                            <p class="text-slate-600">Attribute-based roles mapped to government org charts and clearance levels—cryptographically enforced, never bypassed.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="space-y-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                            <i data-feather="file-text" class="w-4 h-4 text-orange-600"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-slate-900 mb-2">Immutable, Signed Audit Trail</h4>
+                            <p class="text-slate-600">WORM (Write-Once-Read-Many) storage with ECDSA-signed hashes—court-admissible evidence of every prompt, parameter, and policy decision.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4">
+                        <div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                            <i data-feather="award" class="w-4 h-4 text-red-600"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-slate-900 mb-2">Multi-Jurisdiction Compliance Matrix</h4>
+                            <p class="text-slate-600">Pre-certified mappings for GDPR, HIPAA, CJIS, ISO 27001, UK AI Rulebook, EU AI Act, NHS DSPT—switch jurisdictions with one click.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                        <p class="text-sm text-slate-600 italic">
+                            "Designed for compliance-heavy, mission-critical, and air-gapped deployments"
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="py-20 aurora-bg text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">🔁 Prototype → Pilot → Production</h2>
+                <p class="text-xl text-slate-300">Clone, harden, and promote sandboxes without re-architecting—sovereignty travels with the workload</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-24 h-24 bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6 glow-effect shadow-2xl transform hover:scale-110 transition-transform duration-300">
+                        <i data-feather="play" class="w-10 h-10"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Export to Gov Cloud / On-Prem</h3>
+                    <p class="text-slate-300">Seamlessly export your sandbox to government cloud or on-premises infrastructure</p>
+                </div>
+                
+                <div class="text-center" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-24 h-24 bg-gradient-to-br from-green-500 via-emerald-500 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-6 glow-effect shadow-2xl transform hover:scale-110 transition-transform duration-300">
+                        <i data-feather="link" class="w-10 h-10"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Integrate with IT Stack</h3>
+                    <p class="text-slate-300">Full integration capabilities with your existing internal IT infrastructure</p>
+                </div>
+                
+                <div class="text-center" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-24 h-24 bg-gradient-to-br from-purple-500 via-violet-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-6 glow-effect shadow-2xl transform hover:scale-110 transition-transform duration-300">
+                        <i data-feather="arrow-up-right" class="w-10 h-10"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Promote to Production</h3>
+                    <p class="text-slate-300">Easy promotion to full Vector Database Cloud™ deployment for production workloads</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">🧠 What's in the Gov Sandbox™?</h2>
+                <p class="text-xl text-slate-600">Comprehensive AI infrastructure for government innovation</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex items-center space-x-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i data-feather="database" class="w-5 h-5 text-blue-600"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-slate-900">Vector DB Deployment</h4>
+                        <p class="text-sm text-slate-600">Milvus, Qdrant, pgvector, ChromaDB</p>
+                    </div>
+                    <i data-feather="check" class="w-5 h-5 text-green-600 ml-auto"></i>
+                </div>
+                
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex items-center space-x-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i data-feather="cpu" class="w-5 h-5 text-green-600"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-slate-900">LLM & Embedding Models</h4>
+                        <p class="text-sm text-slate-600">OpenAI, Claude, Hugging Face</p>
+                    </div>
+                    <i data-feather="check" class="w-5 h-5 text-green-600 ml-auto"></i>
+                </div>
+                
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex items-center space-x-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i data-feather="message-square" class="w-5 h-5 text-purple-600"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-slate-900">Secure Chatbot Framework</h4>
+                        <p class="text-sm text-slate-600">RAG + Prompt Guardrails</p>
+                    </div>
+                    <i data-feather="check" class="w-5 h-5 text-green-600 ml-auto"></i>
+                </div>
+                
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex items-center space-x-4" data-aos="fade-up" data-aos-delay="400">
+                    <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i data-feather="file" class="w-5 h-5 text-orange-600"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-slate-900">Document Pipelines</h4>
+                        <p class="text-sm text-slate-600">PDFs, Docs, CSV, OCR</p>
+                    </div>
+                    <i data-feather="check" class="w-5 h-5 text-green-600 ml-auto"></i>
+                </div>
+                
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex items-center space-x-4" data-aos="fade-up" data-aos-delay="500">
+                    <div class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i data-feather="git-branch" class="w-5 h-5 text-indigo-600"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-slate-900">Orchestration Engine</h4>
+                        <p class="text-sm text-slate-600">Temporal</p>
+                    </div>
+                    <i data-feather="check" class="w-5 h-5 text-green-600 ml-auto"></i>
+                </div>
+                
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex items-center space-x-4" data-aos="fade-up" data-aos-delay="600">
+                    <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i data-feather="user-check" class="w-5 h-5 text-red-600"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-slate-900">RBAC + Multi-tenant</h4>
+                        <p class="text-sm text-slate-600">Enabled</p>
+                    </div>
+                    <i data-feather="check" class="w-5 h-5 text-green-600 ml-auto"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="py-20 bg-slate-100" id="pricing">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">💸 Pricing</h2>
+                <p class="text-xl text-slate-600">Flexible plans for every government need</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white rounded-2xl shadow-lg p-8 card-hover" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="text-xl font-semibold text-slate-900 mb-4">PoC Pilot</h3>
+                    <div class="text-3xl font-bold text-blue-600 mb-2">£5,995<span class="text-lg font-normal text-slate-600">/mo</span></div>
+                    <p class="text-slate-600 mb-6">Early-stage exploratory use</p>
+                    <button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                        Get Started
+                    </button>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-lg p-8 card-hover border-2 border-blue-600 relative" data-aos="fade-up" data-aos-delay="200">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                        <span class="bg-gradient-to-r from-yellow-400 to-orange-500 text-slate-900 px-6 py-2 rounded-full text-sm font-bold shadow-lg">Most Popular</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-900 mb-4">GovTrack Pro</h3>
+                    <div class="text-3xl font-bold text-blue-600 mb-2">£14,995<span class="text-lg font-normal text-slate-600">/mo</span></div>
+                    <p class="text-slate-600 mb-6">Multi-team internal usage</p>
+                    <button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                        Get Started
+                    </button>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-lg p-8 card-hover" data-aos="fade-up" data-aos-delay="300">
+                    <h3 class="text-xl font-semibold text-slate-900 mb-4">Gov Cloud Launch</h3>
+                    <div class="text-3xl font-bold text-blue-600 mb-2">£75,000+<span class="text-lg font-normal text-slate-600">/mo</span></div>
+                    <p class="text-slate-600 mb-6">Production workloads with backup, audit, SLAs</p>
+                    <button class="w-full bg-slate-800 text-white py-3 rounded-lg hover:bg-slate-900 transition-colors">
+                        Contact Sales
+                    </button>
+                </div>
+                
+                <div class="bg-gradient-to-br from-slate-50 to-white rounded-2xl shadow-2xl p-8 card-hover border border-slate-200" data-aos="fade-up" data-aos-delay="400">
+                    <h3 class="text-xl font-semibold text-slate-900 mb-4">GovHackathon™</h3>
+                    <div class="text-3xl font-bold text-blue-600 mb-2">Custom</div>
+                    <p class="text-slate-600 mb-6">2–8 weeks, themed, full environment & support</p>
+                    <button class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors">
+                        Learn More
+                    </button>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12" data-aos="fade-up">
+                <p class="text-slate-600">Need SCIF-grade hardware or submarine-faraday kits? <a href="#" class="text-blue-600 underline">Ask for Black-Lab™ pricing</a>.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white">
+        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+            <div data-aos="fade-up">
+                <h2 class="text-3xl md:text-5xl font-bold mb-6 text-glow">📬 Ready to Govern AI—Before It Governs You?</h2>
+                <p class="text-xl text-white/80 mb-12 leading-relaxed">
+                    Book a 30-minute classified demo, get a sandbox provisioned in your security zone within 24 hours, or co-host a GovHackathon™ that turns civil servants into AI innovators—without ever breaking sovereignty.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                    <button class="btn-primary px-10 py-5 rounded-xl font-bold text-lg flex items-center justify-center space-x-3 text-white">
+                        <i data-feather="calendar" class="w-6 h-6"></i>
+                        <span>Book Classified Demo</span>
+                    </button>
+                    <button class="btn-secondary px-10 py-5 rounded-xl font-bold text-lg flex items-center justify-center space-x-3 text-white">
+                        <i data-feather="unlock" class="w-6 h-6"></i>
+                        <span>Provision My Sandbox</span>
+                    </button>
+                    <button class="bg-gradient-to-r from-green-600 to-emerald-700 text-white px-10 py-5 rounded-xl font-bold text-lg hover:from-green-700 hover:to-emerald-800 transition-all duration-300 flex items-center justify-center space-x-3 shadow-lg">
+                        <i data-feather="flag" class="w-6 h-6"></i>
+                        <span>Host a GovHackathon™</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                            <i data-feather="shield" class="text-white w-6 h-6"></i>
+                        </div>
+                        <span class="font-bold text-xl">Gov Sandbox™</span>
+                    </div>
+                    <p class="text-slate-400">Secure AI Sandboxes for Government Innovation</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Product</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Features</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Pricing</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Security</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Compliance</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li><a href="#" class="hover:text-white transition-colors">About</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Partners</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Legal</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Security & Compliance</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Partner Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-700 mt-12 pt-8 text-center text-slate-400">
+                <p>© 2025 Gov Sandbox™. All rights reserved. Powered by Vector Database Cloud™.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+        
+        feather.replace();
+        
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.createElement('div');
+        mobileMenu.className = 'md:hidden fixed inset-0 bg-white z-50 transform -translate-x-full transition-transform duration-300';
+        mobileMenu.innerHTML = `
+            <div class="flex justify-between items-center p-4 border-b">
+                <span class="font-bold text-xl">Gov Sandbox™</span>
+                <button id="close-menu" class="p-2">
+                    <i data-feather="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <nav class="p-4 space-y-4">
+                <a href="#features" class="block py-2 text-slate-600 hover:text-blue-600">Features</a>
+                <a href="#pricing" class="block py-2 text-slate-600 hover:text-blue-600">Pricing</a>
+                <a href="#partners" class="block py-2 text-slate-600 hover:text-blue-600">Partners</a>
+                <button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
+                    Request Access
+                </button>
+            </nav>
+        `;
+        document.body.appendChild(mobileMenu);
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.remove('-translate-x-full');
+        });
+        
+        document.getElementById('close-menu').addEventListener('click', () => {
+            mobileMenu.classList.add('-translate-x-full');
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    mobileMenu.classList.add('-translate-x-full');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
